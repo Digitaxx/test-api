@@ -1,29 +1,32 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, Sequelize) => {
     const article = sequelize.define('article', {
         id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: Sequelize.INTEGER
         },
         product_id: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             references: {
                 model: 'product',
                 key: 'id'
             }
         },
-        name: DataTypes.STRING,
-        content: DataTypes.TEXT,
+        name: Sequelize.STRING,
+        content: Sequelize.TEXT,
         created_at: {
             allowNull: false,
-            type: DataTypes.DATE
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+            type: Sequelize.DATE
         }
+    },{
+        freezeTableName: true
     })
     article.associate = function(models) {
-        article.belongsTo(models.product, { foreignKey: 'id', as: 'product' })
+        article.belongsTo(models.product, { foreignKey: 'product_id', as: 'product' })
     };
 
     return article;

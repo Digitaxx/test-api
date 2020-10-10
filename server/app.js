@@ -1,23 +1,15 @@
 const express = require('express');
 const app = express();
 const Sequelize = require('sequelize');
+const bodyParser = require('body-parser')
 
-const db = new Sequelize('api','postgres', 'postgres', {
-    dialect: 'postgres',
-    host: 'db',
-    port: '5432',
-    define: {
-        timestamps: false
-    }
-})
+const productRouter = require('./routes/product');
+const articleRouter = require('./routes/article');
 
-const productsRouter = require('./routes/products');
-const articlesRouter = require('./routes/articles');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-app.use('/products', productsRouter);
-app.use('/articles', articlesRouter);
+app.use('/product', productRouter);
+app.use('/article', articleRouter);
 
 module.exports = app;

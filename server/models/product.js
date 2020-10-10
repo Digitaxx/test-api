@@ -1,13 +1,19 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, Sequelize) => {
     const product = sequelize.define('product', {
-        id: DataTypes.INTEGER,
-        name: DataTypes.STRING,
-        description: DataTypes.TEXT,
-        price: DataTypes.INTEGER
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        name: Sequelize.STRING,
+        description: Sequelize.TEXT,
+        price: Sequelize.INTEGER
+    },{
+        freezeTableName: true
     })
-    product.associate = (models) => {
-        product.hasMany(models.article, { as: 'employes' })
+    product.associate = function(models) {
+        product.hasMany(models.article, {foreignKey: 'product_id'})
     };
 
     return product;
