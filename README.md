@@ -1,4 +1,4 @@
-Use `cp .evn.example .env` for default settings. 
+**Use `cp .evn.example .env` for default settings.** 
 
 Creating virutal enviroment with **Node.js**, **PostgreSQL**.
 
