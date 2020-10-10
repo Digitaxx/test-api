@@ -26,7 +26,13 @@ Return data of item with **id32** from table **product**.
 
 **With sorting**:
 
-`curl -X GET localhost:3000/product`
+**A-z**
+
+`curl -X GET localhost:3000/product?sort=name` 
+
+**Z-a**
+
+`curl -X GET localhost:3000/product?sort=-name` 
 
 #### POST: 
 

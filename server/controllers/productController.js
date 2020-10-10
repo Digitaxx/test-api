@@ -1,5 +1,5 @@
-const {product, article} = require('../models')
-
+const { product, article } = require('../models')
+const { parseQuerySort } = require('../helper')
 //POST
 exports.create = async (req, res) => {
     try {
@@ -21,7 +21,7 @@ exports.getAll = async (req, res) => {
     try {
             res.send(await product.findAll({
                 include: [{model: article}],
-                order: [!!req.query.sort]
+                order: parseQuerySort(req.query.sort, ['id'])
             }));
     } catch (e) {
         console.error(e)
@@ -34,8 +34,7 @@ exports.getById = async (req, res) => {
         await product.sync();
             res.send(await product.findAll({
                 where: {id: req.params.id},
-                include: [{model: article}],
-                order: [!!req.query.sort]
+                include: [{model: article}]
             }));
     } catch (e) {
         console.error(e)

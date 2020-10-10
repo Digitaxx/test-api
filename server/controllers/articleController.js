@@ -1,5 +1,5 @@
-const {product, article} = require('../models')
-
+const { product, article } = require('../models')
+const { parseQuerySort } = require('../helper')
 //POST
 exports.create = async (req, res) => {
     try {
@@ -20,13 +20,11 @@ exports.create = async (req, res) => {
 exports.getAll = async (req, res) => {
     try {
             res.send(await article.findAll({
-                include: [
-                    {
+                include: [{
                         model: product, as: 'product',
                         required: true
-                    }
-                ],
-                order: [!!req.query.sort]
+                    }],
+                order: parseQuerySort(req.query.sort, ['id'])
             }));
     } catch (e) {
         console.error(e)
@@ -39,13 +37,10 @@ exports.getById = async (req, res) => {
         await article.sync();
             res.send(await article.findAll({
                 where: {id: req.params.id},
-                include: [
-                    {
+                include: [{
                         model: product, as: 'product',
                         required: true
-                    }
-                ],
-                order: [!!req.query.sort]
+                    }]
             }));
     } catch (e) {
         console.error(e)
@@ -56,16 +51,13 @@ exports.getById = async (req, res) => {
 //PUT
 exports.updateById = async (req, res) => {
     try {
-        await article.update(
-            {
+        await article.update({
                 product_id: req.body.product_id,
                 name: req.body.name,
                 content: req.body.content
-            },
-            {
+            }, {
                 where: {id: req.params.id}
-            }
-        )
+            })
         res.sendStatus(200);
     } catch (e) {
         console.error(e)
