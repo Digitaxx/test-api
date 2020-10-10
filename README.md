@@ -1,3 +1,5 @@
+Use `cp .evn.example .env` for default settings. 
+
 Creating virutal enviroment with **Node.js**, **PostgreSQL**.
 
 **`docker-compose up --build -d`** 
