@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
         freezeTableName: true
     })
     article.associate = function(models) {
-        article.belongsTo(models.product, { foreignKey: 'product_id', as: 'product' })
+        article.belongsTo(models.product, { foreignKey: 'product_id', as: 'product', onDelete: 'CASCADE' })
     };
 
     return article;

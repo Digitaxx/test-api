@@ -21,12 +21,22 @@ exports.getAll = async (req, res) => {
     try {
         if (req.query.sort) {
             res.send(await article.findAll({
-                include: [{model: product}],
+                include: [
+                    {
+                        model: product, as: 'product',
+                        required: true
+                    }
+                ],
                 order: [req.query.sort]
             }));
         } else {
             res.send(await article.findAll({
-                include: [{model: product}]
+                include: [
+                    {
+                        model: product, as: 'product',
+                        required: true
+                    }
+                ]
             }));
         }
     } catch (e) {
@@ -41,9 +51,10 @@ exports.getById = async (req, res) => {
         if (req.query.sort) {
             res.send(await article.findAll({
                 where: {id: req.params.id},
-                include:[
-                    { model: product, as: 'about_product',
-                        required:true
+                include: [
+                    {
+                        model: product, as: 'product',
+                        required: true
                     }
                 ],
                 order: [req.query.sort]
@@ -51,9 +62,10 @@ exports.getById = async (req, res) => {
         } else {
             res.send(await article.findAll({
                 where: {id: req.params.id},
-                include:[
-                    { model: product, as: 'product',
-                        required:true
+                include: [
+                    {
+                        model: product, as: 'product',
+                        required: true
                     }
                 ]
             }));
@@ -67,7 +79,7 @@ exports.getById = async (req, res) => {
 //PUT
 exports.updateById = async (req, res) => {
     try {
-        let item = await article.update(
+        await article.update(
             {
                 product_id: req.body.product_id,
                 name: req.body.name,
@@ -77,33 +89,31 @@ exports.updateById = async (req, res) => {
                 where: {id: req.params.id}
             }
         )
-        res.json(item);
-    } catch(e) {
+        res.sendStatus(200);
+    } catch (e) {
         console.error(e)
         res.sendStatus(500);
     }
 }
 //DELETE
 exports.deleteAll = async (req, res) => {
-    try{
-        await article.destroy({
-            truncate: true
-        });
+    try {
+        await article.destroy({where: {}});
         res.sendStatus(200)
-    }catch(e){
+    } catch (e) {
         res.sendStatus(500);
     }
 }
 
 exports.deleteById = async (req, res) => {
-    try{
-       await article.destroy({
+    try {
+        await article.destroy({
             where: {
                 id: req.params.id
             }
         });
         res.sendStatus(200);
-    }catch(e){
+    } catch (e) {
         res.sendStatus(500);
     }
 }

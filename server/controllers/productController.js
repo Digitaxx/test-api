@@ -40,13 +40,13 @@ exports.getById = async (req, res) => {
         await product.sync();
         if (req.query.sort) {
             res.send(await product.findAll({
-                where: {id: id},
+                where: {id: req.params.id},
                 include: [{model: article}],
                 order: [req.query.sort]
             }));
         } else {
             res.send(await product.findAll({
-                where: {id: id},
+                where: {id: req.params.id},
                 include: [{model: article}]
             }));
         }
@@ -59,7 +59,7 @@ exports.getById = async (req, res) => {
 //PUT
 exports.updateById = async (req, res) => {
     try {
-       let item = await product.update(
+       await product.update(
             {
                 name: req.body.name,
                 description: req.body.description,
@@ -69,7 +69,7 @@ exports.updateById = async (req, res) => {
                 where: {id: req.params.id}
             }
         )
-        res.json(item);
+        res.sendStatus(200);
     } catch(e) {
         console.error(e)
         res.sendStatus(500);
@@ -78,9 +78,7 @@ exports.updateById = async (req, res) => {
 //DELETE
 exports.deleteAll = async (req, res) => {
     try{
-        await product.destroy({
-            truncate: true
-        });
+        await product.destroy({where: {}});
         res.sendStatus(200)
     }catch(e){
         res.sendStatus(500);
