@@ -47,5 +47,5 @@ Delete data by ID in table.
 
 `curl -X DELETE localhost:3000/product/id`
 
-#####WARN: DELETE method use FORCE remove, with all child's.
+#### WARN: DELETE method use FORCE remove, with all child's.
  
