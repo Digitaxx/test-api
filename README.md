@@ -41,9 +41,6 @@ Updating item in table.
 `curl -X PUT -d "name=newName" localhost:3000/product/32`
 
 #### DELETE:
-Delete all data from table.
-
-`curl -X DELETE localhost:3000/product`
 
 Delete data by ID in table.
 

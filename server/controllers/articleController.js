@@ -1,7 +1,7 @@
 const {product, article} = require('../models')
 
 //POST
-exports.add = async (req, res) => {
+exports.create = async (req, res) => {
     try {
         await article.sync();
         let item = await article.create({
@@ -19,7 +19,6 @@ exports.add = async (req, res) => {
 //GET
 exports.getAll = async (req, res) => {
     try {
-        if (req.query.sort) {
             res.send(await article.findAll({
                 include: [
                     {
@@ -27,18 +26,8 @@ exports.getAll = async (req, res) => {
                         required: true
                     }
                 ],
-                order: [req.query.sort]
+                order: [!!req.query.sort]
             }));
-        } else {
-            res.send(await article.findAll({
-                include: [
-                    {
-                        model: product, as: 'product',
-                        required: true
-                    }
-                ]
-            }));
-        }
     } catch (e) {
         console.error(e)
         res.sendStatus(500);
@@ -48,7 +37,6 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {
     try {
         await article.sync();
-        if (req.query.sort) {
             res.send(await article.findAll({
                 where: {id: req.params.id},
                 include: [
@@ -57,19 +45,8 @@ exports.getById = async (req, res) => {
                         required: true
                     }
                 ],
-                order: [req.query.sort]
+                order: [!!req.query.sort]
             }));
-        } else {
-            res.send(await article.findAll({
-                where: {id: req.params.id},
-                include: [
-                    {
-                        model: product, as: 'product',
-                        required: true
-                    }
-                ]
-            }));
-        }
     } catch (e) {
         console.error(e)
         res.sendStatus(500);
@@ -96,14 +73,6 @@ exports.updateById = async (req, res) => {
     }
 }
 //DELETE
-exports.deleteAll = async (req, res) => {
-    try {
-        await article.destroy({where: {}});
-        res.sendStatus(200)
-    } catch (e) {
-        res.sendStatus(500);
-    }
-}
 
 exports.deleteById = async (req, res) => {
     try {
